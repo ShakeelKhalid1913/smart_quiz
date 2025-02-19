@@ -2,7 +2,36 @@
 
 A modern Flutter quiz application with a beautiful Material 3 design, featuring both user and admin interfaces.
 
-## Features
+## Screenshots
+
+<div align="center">
+  <img src="demo/3.png" width="200" alt="Quiz Screen" style="margin: 10px;"/>
+</div>
+
+<div align="center">
+  <img src="demo/4.png" width="200" alt="Quiz Question" style="margin: 10px;"/>
+  <img src="demo/5.png" width="200" alt="Quiz Answer" style="margin: 10px;"/>
+  <img src="demo/6.png" width="200" alt="Quiz Result" style="margin: 10px;"/>
+</div>
+
+<div align="center">
+  <img src="demo/7.png" width="200" alt="Admin Dashboard" style="margin: 10px;"/>
+  <img src="demo/8.png" width="200" alt="Category Management" style="margin: 10px;"/>
+  <img src="demo/9.png" width="200" alt="Add Category" style="margin: 10px;"/>
+</div>
+
+<div align="center">
+  <img src="demo/10.png" width="200" alt="All Quizzes" style="margin: 10px;"/>
+  <img src="demo/11.png" width="200" alt="Add Quiz" style="margin: 10px;"/>
+  <img src="demo/12.png" width="200" alt="Add Questions" style="margin: 10px;"/>
+</div>
+
+<div align="center">
+  <img src="demo/13.png" width="200" alt="Dark Mode" style="margin: 10px;"/>
+</div>
+
+<details>
+<summary>✨ Features</summary>
 
 ### For Users
 - Browse quizzes by categories
@@ -18,8 +47,10 @@ A modern Flutter quiz application with a beautiful Material 3 design, featuring 
 - Add questions with multiple options
 - Track quiz statistics
 - Monitor user activity
+</details>
 
-## Getting Started
+<details>
+<summary>🚀 Getting Started</summary>
 
 ### Prerequisites
 - Flutter SDK
@@ -46,8 +77,10 @@ flutter run
 To access the admin panel:
 - Email: admin@gmail.com
 - Password: admin123
+</details>
 
-## Technical Details
+<details>
+<summary>🛠️ Technical Details</summary>
 
 ### Architecture
 - Material 3 design system
@@ -67,12 +100,7 @@ To access the admin panel:
 - Adaptive dark/light modes
 - Custom typography with Poppins font
 - Consistent elevation and shapes
-
-## Screenshots
-- User Home Screen: Browse categories and quizzes
-- Quiz Screen: Take quizzes with timer
-- Results Screen: View detailed performance analysis
-- Admin Dashboard: Manage quizzes and categories
+</details>
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

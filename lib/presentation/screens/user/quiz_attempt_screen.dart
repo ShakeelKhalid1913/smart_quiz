@@ -47,19 +47,16 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
         } else {
           timer.cancel();
 
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Time is up!')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Time is up!')),
+          );
 
           // Go to quiz result screen
-          context.pushReplacement(
-            '/quiz-result',
-            extra: QuizResult(
-              quiz: quiz,
-              userAnswers: userAnswers,
-              timeTaken: DateTime.now().difference(startTime),
-            ),
-          );
+          context.pushReplacement('/quiz-result', extra: QuizResult(
+            quiz: quiz,
+            userAnswers: userAnswers,
+            timeTaken: DateTime.now().difference(startTime),
+          ));
         }
       });
     });
@@ -90,14 +87,11 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
       });
     } else {
       final timeTaken = DateTime.now().difference(startTime);
-      context.pushReplacement(
-        '/quiz-result',
-        extra: QuizResult(
-          quiz: quiz,
-          userAnswers: userAnswers,
-          timeTaken: timeTaken,
-        ),
-      );
+      context.pushReplacement('/quiz-result', extra: QuizResult(
+        quiz: quiz,
+        userAnswers: userAnswers,
+        timeTaken: timeTaken,
+      ));
     }
   }
 
@@ -122,24 +116,24 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
                         context: context,
                         builder:
                             (context) => AlertDialog(
-                              title: const Text('Quit Quiz?'),
-                              content: const Text(
-                                'Are you sure you want to quit? Your progress will be lost.',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Close dialog
-                                    Navigator.pop(context); // Close quiz screen
-                                  },
-                                  child: const Text('Quit'),
-                                ),
-                              ],
+                          title: const Text('Quit Quiz?'),
+                          content: const Text(
+                            'Are you sure you want to quit? Your progress will be lost.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
                             ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context); // Close dialog
+                                Navigator.pop(context); // Close quiz screen
+                              },
+                              child: const Text('Quit'),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -206,26 +200,22 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
 
                       if (hasAnswered) {
                         if (isSelected) {
-                          backgroundColor =
-                              isCorrect
-                                  ? (theme.brightness == Brightness.dark
-                                      ? Colors.green[900]
-                                      : Colors.green[50])
-                                  : (theme.brightness == Brightness.dark
-                                      ? Colors.red[900]
-                                      : Colors.red[50]);
+                          backgroundColor = isCorrect
+                              ? (theme.brightness == Brightness.dark
+                                  ? Colors.green[900]
+                                  : Colors.green[50])
+                              : (theme.brightness == Brightness.dark
+                                  ? Colors.red[900]
+                                  : Colors.red[50]);
                           borderColor = isCorrect ? Colors.green : Colors.red;
                         } else if (isCorrect) {
-                          backgroundColor =
-                              theme.brightness == Brightness.dark
-                                  ? Colors.green[900]
-                                  : Colors.green[50];
+                          backgroundColor = theme.brightness == Brightness.dark
+                              ? Colors.green[900]
+                              : Colors.green[50];
                           borderColor = Colors.green;
                         }
                       } else if (isSelected) {
-                        backgroundColor = theme.colorScheme.primary.withOpacity(
-                          0.2,
-                        );
+                        backgroundColor = theme.colorScheme.primary.withOpacity(0.2);
                         borderColor = theme.colorScheme.primary;
                       }
 
