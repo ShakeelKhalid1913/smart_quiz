@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_quiz/models/quiz.dart';
 import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../models/quiz_category.dart';
 import 'all_quizzes_screen.dart';
 
-class AdminDashboard extends StatelessWidget {
+class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
 
+  @override
+  State<AdminDashboard> createState() => _AdminDashboardState();
+}
+
+class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     final categories = QuizCategories().categories;
@@ -63,10 +69,7 @@ class AdminDashboard extends StatelessWidget {
     BuildContext context,
     List<QuizCategory> categories,
   ) {
-    final totalQuizzes = categories.fold<int>(
-      0,
-      (sum, category) => sum + category.quizCount,
-    );
+    final totalQuizzes = Quizzes().allQuizzes.length;
 
     return Row(
       children: [
@@ -76,7 +79,14 @@ class AdminDashboard extends StatelessWidget {
             count: categories.length.toString(),
             title: 'Total Categories',
             icon: Icons.category,
-            onTap: () => context.pushNamed('manage_categories'),
+            onTap: () async {
+              final result = await context.pushNamed('manage_categories');
+              if (result == true) {
+                setState(
+                  () {},
+                ); // Refresh dashboard when returning with changes
+              }
+            },
           ),
         ),
         const SizedBox(width: 16),
@@ -86,13 +96,9 @@ class AdminDashboard extends StatelessWidget {
             count: totalQuizzes.toString(),
             title: 'Total Quizzes',
             icon: Icons.quiz,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AllQuizzesScreen(),
-                ),
-              );
+            onTap: () async {
+              await context.pushNamed('all_quizzes');
+              setState(() {}); // Refresh dashboard when returning
             },
           ),
         ),

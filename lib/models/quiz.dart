@@ -1,3 +1,5 @@
+import 'package:smart_quiz/models/quiz_category.dart';
+
 class Quiz {
   final String id;
   final String title;
@@ -57,7 +59,7 @@ class Quizzes {
       Quiz(
         id: '1',
         title: 'Basics of Flutter',
-        categoryId: '2', // Flutter category
+        categoryId: 'cat_2', // Flutter category
         timeInMinutes: 5,
         createdAt: DateTime.now().subtract(const Duration(days: 2)),
         questions: [
@@ -87,7 +89,7 @@ class Quizzes {
       Quiz(
         id: '2',
         title: 'Basic Java',
-        categoryId: '3', // Flutter category
+        categoryId: 'cat_3', // Java category
         timeInMinutes: 10,
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
         questions: [],
@@ -104,5 +106,20 @@ class Quizzes {
     return allQuizzes
         .where((quiz) => quiz.title.toLowerCase().contains(query))
         .toList();
+  }
+
+  void addQuiz(Quiz quiz) {
+    allQuizzes.add(quiz);
+    // Update category quiz count
+    final categories = QuizCategories();
+    final category = categories.categories.firstWhere(
+      (cat) => cat.id == quiz.categoryId,
+      orElse: () => throw Exception('Category not found'),
+    );
+    category.quizCount++;
+  }
+
+  String generateQuizId() {
+    return 'quiz_${allQuizzes.length + 1}';
   }
 }

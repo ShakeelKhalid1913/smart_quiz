@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../models/quiz.dart';
 import '../../../models/quiz_category.dart';
 
@@ -12,13 +13,20 @@ class AllQuizzesScreen extends StatefulWidget {
 class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
   String _selectedCategoryId = '';
   final _searchController = TextEditingController();
-  List<Quiz> _filteredQuizzes = Quizzes().allQuizzes;
+  List<Quiz> _filteredQuizzes = [];
   final _categories = QuizCategories().categories;
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    _loadQuizzes();
+  }
+
+  void _loadQuizzes() {
+    setState(() {
+      _filteredQuizzes = Quizzes().allQuizzes;
+    });
   }
 
   @override
@@ -33,12 +41,12 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
 
   void _filterQuizzes() {
     var quizzes = Quizzes().allQuizzes;
-    
+
     // Apply category filter
     if (_selectedCategoryId.isNotEmpty) {
       quizzes = Quizzes().getQuizzesByCategory(_selectedCategoryId);
     }
-    
+
     // Apply search filter
     if (_searchController.text.isNotEmpty) {
       quizzes = Quizzes().searchQuizzes(_searchController.text);
@@ -52,16 +60,23 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Quizzes'),
         leading: IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            // TODO: Navigate to add quiz screen
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () async {
+              await context.pushNamed('add_quiz');
+              _loadQuizzes(); // Refresh quizzes when returning
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -90,8 +105,13 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value: _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
+                  value:
+                      _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
                   hint: const Text('All Categories'),
+                  menuMaxHeight: 300,
+                  dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+                  alignment: AlignmentDirectional.centerStart,
+                  // dropdownOverButton: false,
                   items: [
                     const DropdownMenuItem<String>(
                       value: '',
@@ -102,7 +122,7 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
                         value: category.id,
                         child: Text(category.name),
                       );
-                    }).toList(),
+                    }),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -130,16 +150,11 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
                         color: theme.colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Icon(
-                        Icons.quiz,
-                        color: theme.colorScheme.primary,
-                      ),
+                      child: Icon(Icons.quiz, color: theme.colorScheme.primary),
                     ),
                     title: Text(
                       quiz.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     subtitle: Row(
                       children: [
