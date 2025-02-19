@@ -7,10 +7,7 @@ import 'core/router/app_router.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const SmartQuizApp(),
-    ),
+    DevicePreview(enabled: true, builder: (context) => const SmartQuizApp()),
   );
 }
 
@@ -27,7 +24,8 @@ class SmartQuizApp extends StatelessWidget {
             title: 'Smart Quiz',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode:
+                themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             debugShowCheckedModeBanner: false,
             routerConfig: AppRouter.router,
             builder: DevicePreview.appBuilder,

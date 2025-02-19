@@ -8,6 +8,7 @@ import '../../presentation/screens/admin/manage_categories_screen.dart';
 import '../../presentation/screens/user/user_home_screen.dart';
 import '../../presentation/screens/user/category_quizzes_screen.dart';
 import '../../presentation/screens/user/quiz_attempt_screen.dart';
+import '../../presentation/screens/user/quiz_result_screen.dart'; // added import
 
 class AppRouter {
   static final router = GoRouter(
@@ -50,6 +51,12 @@ class AppRouter {
         path: '/quiz/:id',
         builder: (context, state) =>
             QuizAttemptScreen(quizId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        name: 'quiz_result',
+        path: '/quiz-result',
+        builder: (context, state) =>
+            QuizResultScreen(result: state.extra as QuizResult),
       ),
     ],
   );

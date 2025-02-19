@@ -133,6 +133,14 @@ class CategoryQuizzesScreen extends StatelessWidget {
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                             onTap: () {
+                              // if quiz does not have any question
+                              if (quiz.questions.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('This quiz has no questions')),
+                                );
+                                return;
+                              }
                               context.pushNamed('quiz_attempt',
                                   pathParameters: {'id': quiz.id});
                             },

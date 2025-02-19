@@ -58,10 +58,7 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
               text: questionState._questionController.text,
               options:
                   questionState._optionControllers.asMap().entries.map((entry) {
-                    return Option(
-                      id: entry.key.toString(),
-                      text: entry.value.text,
-                    );
+                    return entry.value.text;
                   }).toList(),
               correctOptionIndex: questionState._correctOptionIndex,
             );

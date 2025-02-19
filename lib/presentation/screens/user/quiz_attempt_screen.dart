@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../models/quiz.dart';
+import 'quiz_result_screen.dart';
 
 class QuizAttemptScreen extends StatefulWidget {
   final String quizId;
@@ -18,12 +20,16 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
   bool hasAnswered = false;
   late Timer timer;
   int remainingSeconds = 0;
+  late DateTime startTime;
+  List<int> userAnswers = [];
 
   @override
   void initState() {
     super.initState();
     quiz = Quizzes().allQuizzes.firstWhere((q) => q.id == widget.quizId);
     remainingSeconds = quiz.timeInMinutes * 60;
+    startTime = DateTime.now();
+    userAnswers = List.filled(quiz.questions.length, -1);
     startTimer();
   }
 
@@ -58,6 +64,7 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
     setState(() {
       selectedOptionIndex = index;
       hasAnswered = true;
+      userAnswers[currentQuestionIndex] = index;
     });
   }
 
@@ -69,7 +76,12 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
         hasAnswered = false;
       });
     } else {
-      // TODO: Handle quiz completion
+      final timeTaken = DateTime.now().difference(startTime);
+      context.pushReplacement('/quiz-result', extra: QuizResult(
+        quiz: quiz,
+        userAnswers: userAnswers,
+        timeTaken: timeTaken,
+      ));
     }
   }
 
@@ -94,24 +106,24 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
                         context: context,
                         builder:
                             (context) => AlertDialog(
-                              title: const Text('Quit Quiz?'),
-                              content: const Text(
-                                'Are you sure you want to quit? Your progress will be lost.',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Close dialog
-                                    Navigator.pop(context); // Close quiz screen
-                                  },
-                                  child: const Text('Quit'),
-                                ),
-                              ],
+                          title: const Text('Quit Quiz?'),
+                          content: const Text(
+                            'Are you sure you want to quit? Your progress will be lost.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
                             ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context); // Close dialog
+                                Navigator.pop(context); // Close quiz screen
+                              },
+                              child: const Text('Quit'),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -210,7 +222,7 @@ class _QuizAttemptScreenState extends State<QuizAttemptScreen> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    option.text,
+                                    option,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color:

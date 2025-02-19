@@ -23,7 +23,7 @@ class Quiz {
 class Question {
   final String id;
   final String text;
-  final List<Option> options;
+  final List<String> options;
   final int correctOptionIndex;
 
   const Question({
@@ -32,13 +32,6 @@ class Question {
     required this.options,
     required this.correctOptionIndex,
   });
-}
-
-class Option {
-  final String id;
-  final String text;
-
-  const Option({required this.id, required this.text});
 }
 
 class Quizzes {
@@ -67,9 +60,9 @@ class Quizzes {
             id: '1',
             text: 'What is Flutter?',
             options: [
-              Option(id: '1', text: 'A mobile framework'),
-              Option(id: '2', text: 'A programming language'),
-              Option(id: '3', text: 'Both'),
+              'A mobile framework',
+              'A programming language',
+              'Both',
             ],
             correctOptionIndex: 0,
           ),
@@ -77,9 +70,9 @@ class Quizzes {
             id: '2',
             text: 'How many widgets can you fit in a screen?',
             options: [
-              Option(id: '1', text: 'Infinity'),
-              Option(id: '2', text: 'Until there is no more room'),
-              Option(id: '3', text: 'Until you run out of time'),
+              'Infinity',
+              'Until there is no more room',
+              'Until you run out of time',
             ],
             correctOptionIndex: 1,
           ),
