@@ -5,7 +5,6 @@ import 'package:smart_quiz/models/quiz.dart';
 import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../models/quiz_category.dart';
-import 'all_quizzes_screen.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -21,16 +20,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Smart Quiz'),
+        title: const Text('Admin Dashboard'),
         actions: [
+          // logout button
           IconButton(
-            icon: Icon(
-              Provider.of<ThemeProvider>(context).isDarkMode
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              // take to main screen
+              context.go('/');
             },
           ),
         ],
@@ -56,8 +53,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
               _buildCategoryStatistics(context, categories),
               const SizedBox(height: 24),
               _buildRecentActivity(context),
-              const SizedBox(height: 24),
-              _buildQuizActions(context),
             ],
           ),
         ),
@@ -253,70 +248,5 @@ class _AdminDashboardState extends State<AdminDashboard> {
     } else {
       return '${difference.inDays} days ago';
     }
-  }
-
-  Widget _buildQuizActions(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Quiz Actions',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                context,
-                'Categories',
-                Icons.category,
-                () => context.pushNamed('manage_categories'),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: _buildActionCard(
-                context,
-                'Quizzes',
-                Icons.quiz,
-                () => context.pushNamed('manage_quizzes'),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-    VoidCallback onTap,
-  ) {
-    final theme = Theme.of(context);
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 32, color: theme.colorScheme.primary),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
