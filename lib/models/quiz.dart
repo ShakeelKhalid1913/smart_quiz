@@ -24,13 +24,13 @@ class Question {
   final String id;
   final String text;
   final List<Option> options;
-  final String correctOptionId;
+  final int correctOptionIndex;
 
   const Question({
     required this.id,
     required this.text,
     required this.options,
-    required this.correctOptionId,
+    required this.correctOptionIndex,
   });
 }
 
@@ -71,7 +71,7 @@ class Quizzes {
               Option(id: '2', text: 'A programming language'),
               Option(id: '3', text: 'Both'),
             ],
-            correctOptionId: '1',
+            correctOptionIndex: 0,
           ),
           Question(
             id: '2',
@@ -81,7 +81,7 @@ class Quizzes {
               Option(id: '2', text: 'Until there is no more room'),
               Option(id: '3', text: 'Until you run out of time'),
             ],
-            correctOptionId: '2',
+            correctOptionIndex: 1,
           ),
         ],
       ),

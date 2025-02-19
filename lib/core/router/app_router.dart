@@ -6,6 +6,8 @@ import '../../presentation/screens/admin/admin_dashboard.dart';
 import '../../presentation/screens/admin/all_quizzes_screen.dart';
 import '../../presentation/screens/admin/manage_categories_screen.dart';
 import '../../presentation/screens/user/user_home_screen.dart';
+import '../../presentation/screens/user/category_quizzes_screen.dart';
+import '../../presentation/screens/user/quiz_attempt_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -35,6 +37,19 @@ class AppRouter {
         path: '/admin/add-quiz',
         name: 'add_quiz',
         builder: (context, state) => const AddQuizScreen(),
+      ),
+      GoRoute(
+        name: 'category_quizzes',
+        path: '/category/:id',
+        builder:
+            (context, state) =>
+                CategoryQuizzesScreen(categoryId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        name: 'quiz_attempt',
+        path: '/quiz/:id',
+        builder: (context, state) =>
+            QuizAttemptScreen(quizId: state.pathParameters['id']!),
       ),
     ],
   );

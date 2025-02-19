@@ -249,7 +249,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
                     onTap: () {
-                      // TODO: Navigate to category quizzes
+                      context.pushNamed('category_quizzes', pathParameters: {'id': category.id});
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../models/quiz.dart';
 import '../../../models/quiz_category.dart';
+import '../../widgets/category_chips.dart';
 
 class AddQuizScreen extends StatefulWidget {
   const AddQuizScreen({super.key});
@@ -62,7 +63,7 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
                       text: entry.value.text,
                     );
                   }).toList(),
-              correctOptionId: questionState._correctOptionIndex.toString(),
+              correctOptionIndex: questionState._correctOptionIndex,
             );
           }).toList();
 
@@ -104,9 +105,6 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final categories = QuizCategories().categories;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -114,14 +112,6 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text('Add Quiz'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: () {
-              // TODO: Show help dialog
-            },
-          ),
-        ],
       ),
       body: Form(
         key: _formKey,
@@ -150,37 +140,23 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
               },
             ),
             const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value:
-                      _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
-                  hint: const Text('Select Category'),
-                  items:
-                      categories.map((category) {
-                        return DropdownMenuItem<String>(
-                          value: category.id,
-                          child: Text(category.name),
-                        );
-                      }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategoryId = value ?? '';
-                    });
-                  },
-                ),
-              ),
+            const Text(
+              'Select Category',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            CategoryChips(
+              selectedCategoryId: _selectedCategoryId,
+              onCategorySelected: (categoryId) {
+                setState(() {
+                  _selectedCategoryId = categoryId;
+                });
+              },
+              showAllOption: false,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _timeController,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: 'Time Limit (in minutes)',
                 prefixIcon: const Icon(Icons.timer),
@@ -188,6 +164,7 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter time limit';
@@ -211,8 +188,8 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
                   icon: const Icon(Icons.add),
                   label: const Text('Add Question'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -237,8 +214,8 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
             ElevatedButton(
               onPressed: _submitForm,
               style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: const EdgeInsets.all(16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

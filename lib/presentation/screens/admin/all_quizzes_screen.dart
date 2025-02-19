@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../models/quiz.dart';
 import '../../../models/quiz_category.dart';
+import '../../widgets/category_chips.dart';
 
 class AllQuizzesScreen extends StatefulWidget {
   const AllQuizzesScreen({super.key});
@@ -14,7 +15,6 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
   String _selectedCategoryId = '';
   final _searchController = TextEditingController();
   List<Quiz> _filteredQuizzes = [];
-  final _categories = QuizCategories().categories;
 
   @override
   void initState() {
@@ -44,12 +44,17 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
 
     // Apply category filter
     if (_selectedCategoryId.isNotEmpty) {
-      quizzes = Quizzes().getQuizzesByCategory(_selectedCategoryId);
+      quizzes = quizzes
+          .where((quiz) => quiz.categoryId == _selectedCategoryId)
+          .toList();
     }
 
     // Apply search filter
     if (_searchController.text.isNotEmpty) {
-      quizzes = Quizzes().searchQuizzes(_searchController.text);
+      quizzes = quizzes
+          .where((quiz) =>
+              quiz.title.toLowerCase().contains(_searchController.text.toLowerCase()))
+          .toList();
     }
 
     setState(() {
@@ -66,14 +71,14 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
         title: const Text('All Quizzes'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () async {
               await context.pushNamed('add_quiz');
-              _loadQuizzes(); // Refresh quizzes when returning
+              _loadQuizzes();
             },
           ),
         ],
@@ -85,100 +90,94 @@ class _AllQuizzesScreenState extends State<AllQuizzesScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search Quizzes',
-                prefixIcon: const Icon(Icons.search),
+                hintText: 'Search quizzes...',
+                filled: true,
+                fillColor: theme.brightness == Brightness.dark
+                    ? Colors.grey[800]
+                    : Colors.grey[200],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                prefixIcon: const Icon(Icons.search),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value:
-                      _selectedCategoryId.isEmpty ? null : _selectedCategoryId,
-                  hint: const Text('All Categories'),
-                  menuMaxHeight: 300,
-                  dropdownColor: Theme.of(context).scaffoldBackgroundColor,
-                  alignment: AlignmentDirectional.centerStart,
-                  // dropdownOverButton: false,
-                  items: [
-                    const DropdownMenuItem<String>(
-                      value: '',
-                      child: Text('All Categories'),
-                    ),
-                    ..._categories.map((category) {
-                      return DropdownMenuItem<String>(
-                        value: category.id,
-                        child: Text(category.name),
-                      );
-                    }),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategoryId = value ?? '';
-                      _filterQuizzes();
-                    });
-                  },
-                ),
-              ),
-            ),
+          CategoryChips(
+            selectedCategoryId: _selectedCategoryId,
+            onCategorySelected: (categoryId) {
+              setState(() {
+                _selectedCategoryId = categoryId;
+              });
+              _filterQuizzes();
+            },
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: _filteredQuizzes.length,
-              itemBuilder: (context, index) {
-                final quiz = _filteredQuizzes[index];
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+            child: _filteredQuizzes.isEmpty
+                ? Center(
+                    child: Text(
+                      'No quizzes found',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: theme.textTheme.bodySmall?.color,
                       ),
-                      child: Icon(Icons.quiz, color: theme.colorScheme.primary),
                     ),
-                    title: Text(
-                      quiz.title,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Row(
-                      children: [
-                        Icon(
-                          Icons.question_answer,
-                          size: 16,
-                          color: theme.colorScheme.primary,
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _filteredQuizzes.length,
+                    itemBuilder: (context, index) {
+                      final quiz = _filteredQuizzes[index];
+                      final category = QuizCategories()
+                          .categories
+                          .firstWhere((c) => c.id == quiz.categoryId);
+
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: category.color,
+                            child: Text(
+                              quiz.title[0].toUpperCase(),
+                              style: TextStyle(
+                                color: ThemeData.estimateBrightnessForColor(
+                                            category.color) ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          title: Text(
+                            quiz.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(category.name),
+                              Text(
+                                '${quiz.questions.length} ${quiz.questions.length == 1 ? 'Question' : 'Questions'} • ${quiz.timeInMinutes} mins',
+                                style: TextStyle(
+                                  color: theme.colorScheme.primary,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          isThreeLine: true,
+                          trailing: IconButton(
+                            icon: const Icon(Icons.more_vert),
+                            onPressed: () {
+                              // TODO: Show edit/delete options
+                            },
+                          ),
                         ),
-                        const SizedBox(width: 4),
-                        Text('${quiz.totalQuestions} Questions'),
-                        const SizedBox(width: 16),
-                        Icon(
-                          Icons.timer,
-                          size: 16,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(width: 4),
-                        Text('${quiz.timeInMinutes} mins'),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
