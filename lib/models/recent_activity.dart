@@ -13,7 +13,7 @@ class RecentActivity {
 
   factory RecentActivity() => instance;
 
-  RecentActivity._internal(){
+  RecentActivity._internal() {
     init();
   }
 
@@ -28,7 +28,9 @@ class RecentActivity {
 
   // add activity
   void addActivity(Activity activity) {
-    activities.add(activity);
+    activities.removeLast();
+    // add at first
+    activities.insert(0, activity);
   }
 
   // get all activities

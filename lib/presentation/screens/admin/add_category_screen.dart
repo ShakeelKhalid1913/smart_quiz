@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../models/quiz_category.dart';
 
 class AddCategoryScreen extends StatefulWidget {
@@ -49,6 +50,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Category created successfully')),
+        );
+        // add in activity
+        RecentActivity().addActivity(
+          Activity(
+            description: "${_nameController.text} category created",
+            date: DateTime.now(),
+          ),
         );
         Navigator.pop(context);
       } catch (e) {

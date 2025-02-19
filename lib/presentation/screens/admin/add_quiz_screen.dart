@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../models/quiz.dart';
 import '../../../models/quiz_category.dart';
 
@@ -79,6 +80,14 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
         quizzes.addQuiz(quiz);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Quiz created successfully')),
+        );
+
+        // add in activity
+        RecentActivity().addActivity(
+          Activity(
+            description: "${_titleController.text} quiz created",
+            date: DateTime.now(),
+          ),
         );
         Navigator.pop(context);
       } catch (e) {

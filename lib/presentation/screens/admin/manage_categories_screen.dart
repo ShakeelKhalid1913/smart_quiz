@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_quiz/models/recent_activity.dart';
 import '../../../models/quiz_category.dart';
 import 'add_category_screen.dart';
 
@@ -48,6 +49,14 @@ class _ManageCategoriesScreenState extends State<ManageCategoriesScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Category deleted successfully'),
+                  ),
+                );
+
+                // add in activity
+                RecentActivity().addActivity(
+                  Activity(
+                    description: "${category.name} category deleted",
+                    date: DateTime.now(),
                   ),
                 );
               },
