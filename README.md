@@ -1,100 +1,81 @@
-# Smart Quiz
+# Smart Quiz App
 
-A modern Flutter-based quiz application that allows administrators to create and manage quizzes while providing users with an engaging learning experience.
+A modern Flutter quiz application with a beautiful Material 3 design, featuring both user and admin interfaces.
 
 ## Features
 
-### Admin Dashboard
-- Quick overview of total quizzes and categories
-- Recent activity tracking
-- Theme toggle (Light/Dark mode)
-- Quick access to manage categories and quizzes
+### For Users
+- Browse quizzes by categories
+- Take quizzes with timed sessions
+- Get instant feedback on answers
+- View detailed quiz results with analysis
+- Track progress and performance
+- Dark/Light theme support
 
-### Category Management
-- Create, view, edit, and delete quiz categories
-- Category details include:
-  - Name
-  - Description
-  - Quiz count tracking
-
-### Quiz Management
-- Comprehensive quiz listing with search and filter capabilities
-- Quiz details include:
-  - Title
-  - Category
-  - Number of questions
-  - Time limit
-- MCQ (Multiple Choice Questions) support
-  - Questions with multiple options
-  - Correct answer tracking
-
-## Project Structure
-
-```
-lib/
-├── core/
-│   ├── providers/
-│   │   └── theme_provider.dart
-│   ├── router/
-│   │   └── app_router.dart
-│   └── theme/
-│       └── app_theme.dart
-├── models/
-│   ├── quiz_category.dart
-│   ├── quiz.dart
-│   └── recent_activity.dart
-└── presentation/
-    └── screens/
-        └── admin/
-            ├── admin_dashboard.dart
-            ├── manage_categories_screen.dart
-            ├── add_category_screen.dart
-            └── all_quizzes_screen.dart
-```
-
-## State Management
-- Provider for theme management
-- Singleton pattern for data models:
-  - QuizCategories
-  - Quizzes
-  - RecentActivity
-
-## Dependencies
-- flutter
-- provider: State management
-- go_router: Navigation
-- google_fonts: Typography
+### For Admins
+- Manage quiz categories
+- Create and edit quizzes
+- Add questions with multiple options
+- Track quiz statistics
+- Monitor user activity
 
 ## Getting Started
 
-1. Ensure you have Flutter installed on your machine
-2. Clone the repository
-3. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-4. Run the app:
-   ```bash
-   flutter run
-   ```
+### Prerequisites
+- Flutter SDK
+- Dart SDK
+- Android Studio / VS Code
 
-## Development Status
+### Installation
+1. Clone the repository
+```bash
+git clone https://github.com/shakeelkhalid1913/smart_quiz.git
+```
 
-### Completed
-- Admin dashboard with statistics
-- Theme switching (Light/Dark mode)
-- Category management
-- Quiz listing with search and filters
-- Recent activity tracking
+2. Install dependencies
+```bash
+flutter pub get
+```
 
-### In Progress
-- Quiz creation interface
-- Quiz editing capabilities
-- User authentication
-- Quiz attempt tracking
+3. Run the app
+```bash
+flutter run
+```
 
-### Planned
-- User dashboard
-- Quiz results and analytics
-- Performance tracking
-- Leaderboards
+### Admin Access
+To access the admin panel:
+- Email: admin@gmail.com
+- Password: admin123
+
+## Technical Details
+
+### Architecture
+- Material 3 design system
+- Provider for state management
+- Go Router for navigation
+- Singleton pattern for data models
+
+### Key Components
+- Dynamic quiz creation
+- Category-based organization
+- Real-time scoring
+- Progress tracking
+- Detailed analytics
+
+### Theme
+- Purple-based Material 3 color scheme
+- Adaptive dark/light modes
+- Custom typography with Poppins font
+- Consistent elevation and shapes
+
+## Screenshots
+- User Home Screen: Browse categories and quizzes
+- Quiz Screen: Take quizzes with timer
+- Results Screen: View detailed performance analysis
+- Admin Dashboard: Manage quizzes and categories
+
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details

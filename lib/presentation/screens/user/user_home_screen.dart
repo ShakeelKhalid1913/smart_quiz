@@ -176,10 +176,22 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: _searchController,
+                  style: TextStyle(
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                   decoration: InputDecoration(
-                    hintText: 'Search categories...',
+                    hintText: 'Search quizzes...',
+                    hintStyle: TextStyle(
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white70
+                          : Colors.black54,
+                    ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: theme.brightness == Brightness.dark
+                        ? Colors.grey[800]
+                        : Colors.grey[200],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -249,7 +261,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
                     onTap: () {
-                      context.pushNamed('category_quizzes', pathParameters: {'id': category.id});
+                      context.pushNamed(
+                        'category_quizzes',
+                        pathParameters: {'id': category.id},
+                      );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
